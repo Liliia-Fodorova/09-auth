@@ -70,7 +70,7 @@ export async function checkSession() {
 }
 
 export async function getMe() {
-  const { data } = await nextServer.get<User>("/user/me");
+  const { data } = await nextServer.get<User>("/users/me");
   return data;
 }
 
@@ -84,6 +84,6 @@ export async function login(data: LoginRequest) {
 }
 
 export const updateMe = async (payload: UpdateUserRequest) => {
-  const res = await nextServer.patch<User>("/user/me", payload);
+  const res = await nextServer.patch<User>("/users/me", payload);
   return res.data;
 };

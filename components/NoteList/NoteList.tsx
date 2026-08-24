@@ -6,6 +6,7 @@ import { deleteNote } from "@/lib/api/clientApi";
 import { useState } from "react";
 import Link from "next/link";
 
+
 interface NoteListProps {
   notes: Note[];
 }
@@ -31,23 +32,23 @@ export default function NoteList({ notes }: NoteListProps) {
       },
     });
   };
-
+ 
   return (
     <ul className={css.list}>
-      {notes.map(({ _id, title, content, tag },index) => (
-          <li className={css.listItem} key={`${_id}-${index}`}>
+      {notes.map(({id, title, content, tag },index) => (
+          <li className={css.listItem} key={`${id}-${index}`}>
           <h2 className={css.title}>{title}</h2>
           <p className={css.content}>{content}</p>
           <div className={css.footer}>
             <span className={css.tag}>{tag}</span>
-            <Link className={css.link} href={`/notes/${_id}`}>
+            <Link className={css.link} href={`/notes/${id}`}>
               View details
             </Link>
             <button
-              onClick={() => _id && removeNote(_id)}
+              onClick={() => id && removeNote(id)}
               className={css.button}
             >
-              {deletingId === _id ? "Processing..." : "Delete"}
+              {deletingId === id ? "Processing..." : "Delete"}
             </button>
           </div>
         </li>
