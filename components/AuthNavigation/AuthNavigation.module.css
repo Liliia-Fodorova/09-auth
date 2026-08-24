@@ -1,0 +1,121 @@
+.userEmail {
+    color: white;
+    margin-right: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.logoutButton {
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.logoutButton:hover {
+    background-color: white;
+    color: #333;
+}
+
+.navigation {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+}
+
+.navigationItem {
+    display: flex;
+    align-items: center;
+}
+
+.navigationLink {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+}
+
+.navigationLink:hover {
+    color: #ddd;
+}
+
+.bigNav {
+    display: none;
+}
+
+@media only screen and (min-width: 768px) {
+    .bigNav {
+        display: flex;
+        gap: 10px;
+    }
+
+    .menuWrapper {
+        display: none;
+    }
+}
+
+.menuWrapper {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition:
+        opacity 250ms ease,
+        transform 250ms ease,
+        visibility 250ms ease;
+}
+
+.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.burger {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    transition: 250ms ease;
+}
+
+.burger:hover,
+.burger:active {
+    transform: rotate(90deg);
+}
+
+.dropdown {
+    text-decoration: none;
+    min-width: 70px;
+}
+
+.dropdown>.navigation {
+    flex-direction: column;
+}
+
+.dropdown .navigationLink,
+.dropdown .logoutButton,
+.dropdown .userEmail {
+    color: #333;
+}
+
+.dropdown .logoutButton {
+    border: 1px solid #333;
+}
