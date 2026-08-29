@@ -1,7 +1,7 @@
 import type { CreateNote, Note, RegisterRequest } from "@/types/note";
 import type { User } from "@/types/user";
 import { nextServer } from "./api";
-import { api } from "@/app/api/api";
+
 
 
 interface Response {
@@ -31,7 +31,7 @@ export async function fetchNotes({
   perPage,
   tag,
 }: FetchNotesProps): Promise<Response> {
-  const response = await api.get<Response>("/notes", {
+  const response = await nextServer.get<Response>("/notes", {
     params: {
       search: query,
       page,

@@ -24,7 +24,7 @@ export async function proxy(request: NextRequest) {
   );
 
   if (!accessToken) {
-    if (refreshToken && sessionId) {
+    if (refreshToken) {
       const data = await checkSession();
 
       const setCookie = data.headers["set-cookie"];
@@ -51,19 +51,11 @@ export async function proxy(request: NextRequest) {
         }
 
         if (isPublicRoute) {
-          return NextResponse.redirect(new URL("/", request.url), {
-            headers: {
-              Cookie: cookieStore.toString(),
-            },
-          });
+          return NextResponse.redirect(new URL("/", request.url));
         }
 
         if (isPrivateRoute) {
-          return NextResponse.next({
-            headers: {
-              Cookie: cookieStore.toString(),
-            },
-          });
+          return NextResponse.next();
         }
       }
     }
