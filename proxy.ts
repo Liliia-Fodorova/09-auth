@@ -11,7 +11,6 @@ export async function proxy(request: NextRequest) {
 
   const accessToken = cookieStore.get("accessToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
-  const sessionId = cookieStore.get("sessionId")?.value;
 
   const { pathname } = request.nextUrl;
 
