@@ -1,11 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
-import css from "./SigninPage.module.css";
+import css from "./SignInPage.module.css";
 import { useState } from "react";
 import { useAuthStore } from "@/lib/store/authStore";
 import { ApiError } from "next/dist/server/api-utils";
 import { login } from "@/lib/api/clientApi";
-import { LoginRequest } from "@/types/user";
+
+type LoginRequest = {
+  email: string;
+  password: string;
+};
 
 export default function SignIn() {
   const router = useRouter();

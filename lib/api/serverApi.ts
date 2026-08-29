@@ -1,6 +1,8 @@
-import { Note } from "@/types/note";
-import axios from "axios";
 import { cookies } from "next/headers";
+import { nextServer } from "./api";
+import type { Note } from "@/types/note";
+import type { User } from "@/types/user";
+import { api } from "@/app/api/api";
 
 interface Response {
   notes: Note[];
@@ -14,8 +16,6 @@ interface FetchNotesProps {
   tag?: string;
 }
 
-const backendUrl = process.env.NEXT_PUBLIC_API_URL;
-
 export async function fetchNotes({
   query,
   page,
@@ -23,7 +23,8 @@ export async function fetchNotes({
   tag,
 }: FetchNotesProps): Promise<Response> {
   const cookieStore = await cookies();
-  const response = await axios.get<Response>(`${backendUrl}/notes`, {
+
+  const response = await nextServer.get<Response>("/notes", {
     params: {
       search: query,
       page,
@@ -40,25 +41,36 @@ export async function fetchNotes({
 
 export async function fetchNoteById(id: string): Promise<Note> {
   const cookieStore = await cookies();
-  const response = await axios.get<Note>(`${backendUrl}/notes/${id}`, {
+
+  const response = await nextServer.get<Note>(`/notes/${id}`, {
     headers: {
       Cookie: cookieStore.toString(),
     },
   });
+
+  return response.data;
+}
+
+export async function getMe(): Promise<User> {
+  const cookieStore = await cookies();
+
+  const response = await api.get<User>("/users/me", {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+
   return response.data;
 }
 
 export async function checkSession() {
   const cookieStore = await cookies();
-  const res = await axios.post(
-    `${backendUrl}/auth/refresh`,
-    {},
-    {
-      headers: {
-        Cookie: cookieStore.toString(),
-      },
-    },
-  );
 
-  return res;
+  const response = await nextServer.get("/auth/session", {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+
+  return response;
 }

@@ -1,6 +1,7 @@
+import type { Metadata } from "next";
+import { getMe } from "@/lib/api/serverApi";
 import ProfileClient from "./ProfileClient";
 import css from "./ProfilePage.module.css";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "NoteHub Profile",
@@ -22,11 +23,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Profile() {
+export default async function Profile() {
+  const user = await getMe();
+
   return (
     <main className={css.mainContent}>
       <div className={css.profileCard}>
-        <ProfileClient />
+        <ProfileClient user={user} />
       </div>
     </main>
   );

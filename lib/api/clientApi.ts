@@ -1,6 +1,8 @@
 import type { CreateNote, Note, RegisterRequest } from "@/types/note";
+import type { User } from "@/types/user";
 import { nextServer } from "./api";
-import { LoginRequest, UpdateUserRequest, User } from "@/types/user";
+import { api } from "@/app/api/api";
+
 
 interface Response {
   notes: Note[];
@@ -14,13 +16,22 @@ interface FetchNotesProps {
   tag?: string;
 }
 
+interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+interface UpdateUserRequest {
+  username?: string;
+}
+
 export async function fetchNotes({
   query,
   page,
   perPage,
   tag,
 }: FetchNotesProps): Promise<Response> {
-  const response = await nextServer.get<Response>(`/notes`, {
+  const response = await api.get<Response>("/notes", {
     params: {
       search: query,
       page,
@@ -37,11 +48,12 @@ export async function createNote({
   content,
   tag,
 }: CreateNote): Promise<Note> {
-  const response = await nextServer.post<Note>(`/notes`, {
+  const response = await nextServer.post<Note>("/notes", {
     title,
     content,
     tag,
   });
+
   return response.data;
 }
 
@@ -56,8 +68,8 @@ export async function fetchNoteById(id: string): Promise<Note> {
 }
 
 export async function register(data: RegisterRequest) {
-  const res = await nextServer.post<User>(`/auth/register`, data);
-  return res.data;
+  const response = await nextServer.post<User>("/auth/register", data);
+  return response.data;
 }
 
 type CheckSessionRequest = {
@@ -65,13 +77,13 @@ type CheckSessionRequest = {
 };
 
 export async function checkSession() {
-  const res = await nextServer.get<CheckSessionRequest>("/auth/session");
-  return res.data.success;
+  const response = await nextServer.get<CheckSessionRequest>("/auth/session");
+  return response.data.success;
 }
 
-export async function getMe() {
-  const { data } = await nextServer.get<User>("/users/me");
-  return data;
+export async function getMe(): Promise<User> {
+  const response = await nextServer.get<User>("/users/me");
+  return response.data;
 }
 
 export async function logout(): Promise<void> {
@@ -79,11 +91,13 @@ export async function logout(): Promise<void> {
 }
 
 export async function login(data: LoginRequest) {
-  const res = await nextServer.post<User>("/auth/login", data);
-  return res.data;
+  const response = await nextServer.post<User>("/auth/login", data);
+  return response.data;
 }
 
-export const updateMe = async (payload: UpdateUserRequest) => {
-  const res = await nextServer.patch<User>("/users/me", payload);
-  return res.data;
-};
+export async function updateMe(
+  payload: UpdateUserRequest
+): Promise<User> {
+  const response = await nextServer.patch<User>("/users/me", payload);
+  return response.data;
+}

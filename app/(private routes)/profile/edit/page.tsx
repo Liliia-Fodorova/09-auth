@@ -1,4 +1,5 @@
 "use client";
+
 import { useAuthStore } from "@/lib/store/authStore";
 import css from "./EditProfilePage.module.css";
 import Image from "next/image";
@@ -22,9 +23,11 @@ export default function EditPage() {
     setUserName(e.target.value);
   };
 
-  const handleUpdate = async (e: React.SubmitEvent<HTMLFormElement>) => {
-    e?.preventDefault();
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     const res = await updateMe({ username: userName });
+
     setUser(res);
     router.push("/profile");
   };
@@ -35,7 +38,7 @@ export default function EditPage() {
         <h1 className={css.formTitle}>Edit Profile</h1>
 
         <Image
-          src="https://ac.goit.global/fullstack/react/default-avatar.jpg"
+          src={user?.avatar || "https://ac.goit.global/fullstack/react/default-avatar.jpg"}
           alt="User Avatar"
           width={120}
           height={120}
@@ -46,11 +49,12 @@ export default function EditPage() {
         <form onSubmit={handleUpdate} className={css.profileInfo}>
           <div className={css.usernameWrapper}>
             <label htmlFor="username">Username:</label>
+
             <input
               id="username"
               type="text"
               className={css.input}
-              defaultValue={userName}
+              value={userName}
               onChange={handleChange}
             />
           </div>
@@ -61,6 +65,7 @@ export default function EditPage() {
             <button type="submit" className={css.saveButton}>
               Save
             </button>
+
             <button
               onClick={() => router.back()}
               type="button"
@@ -74,5 +79,3 @@ export default function EditPage() {
     </main>
   );
 }
-
-// `${process.env.NEXT_PUBLIC_API_URL}${user?.photoUrl}`;

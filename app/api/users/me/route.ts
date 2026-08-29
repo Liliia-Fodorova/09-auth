@@ -6,13 +6,16 @@ import { cookies } from 'next/headers';
 import { logErrorResponse } from '../../_utils/utils';
 import { isAxiosError } from 'axios';
 
+
 export async function GET() {
   try {
     const cookieStore = await cookies();
 
+    const cookieString = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
+
     const res = await api.get('/users/me', {
-      headers: {
-        Cookie: cookieStore.toString(),
+       headers: {
+      Cookie: cookieString,
       },
     });
     return NextResponse.json(res.data, { status: res.status });
@@ -29,16 +32,22 @@ export async function GET() {
   }
 }
 
+
 export async function PATCH(request: Request) {
   try {
     const cookieStore = await cookies();
-    const body = await request.json();
+    const body = await request.json(); // Раскомментировали body
+
+    // Добавили await перед cookieStore.getAll()
+    const allCookies = await cookieStore.getAll(); 
+    const cookieString = allCookies.map(c => `${c.name}=${c.value}`).join('; ');
 
     const res = await api.patch('/users/me', body, {
       headers: {
-        Cookie: cookieStore.toString(),
+        Cookie: cookieString,
       },
     });
+
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {

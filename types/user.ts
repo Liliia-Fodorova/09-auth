@@ -4,12 +4,12 @@ export type User = {
   avatar: string;
 };
 
-export type UpdateUserRequest = {
-  username?: string;
-  photoUrl?: string;
-};
+// export type UpdateUserRequest = {
+//   username?: string;
+//   photoUrl?: string;
+// };
 
-export type LoginRequest = {
-  email: string;
-  password: string;
-};
+// export type LoginRequest = {
+//   email: string;
+//   password: string;
+// };
